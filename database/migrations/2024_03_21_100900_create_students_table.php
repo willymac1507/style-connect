@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('tel');
             $table->string('profile_picture')->nullable();
             $table->text('biog');
-            $table->foreignId('organisation');
+            $table->foreignId('organisation')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
