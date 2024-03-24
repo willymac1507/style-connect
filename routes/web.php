@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -17,8 +19,18 @@ Route::middleware('auth')->group(function () {
     Route::delete('/account', [AccountController::class, 'destroy'])->name('account.destroy');
 });
 
+Route::get('/profile/create', [\App\Http\Controllers\ProfileController::class, 'create'])->middleware('auth')->name('profile.create');
+
 Route::middleware('auth')->group(function () {
-    Route::get('/profile/create', [\App\Http\Controllers\ProfileController::class, 'create'])->name('profile.create');
+    Route::get('/profile/student/create', [StudentController::class, 'create'])->name('profile.student.create');
+    Route::post('/profile/student/create', [StudentController::class, 'store'])->name('profile.student.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile/client/create', [ClientController::class, 'create'])->name('profile.client.create');
+    Route::post('/profile/client/create', [ClientController::class, 'store'])->name('profile.client.store');
+    Route::get('/profile/client/{client:id}', [ClientController::class, 'show'])->name('profile.client.show');
+    Route::get('/profile/client/{client:id}/edit', [ClientController::class, 'edit'])->name('profile.client.edit');
 });
 
 require __DIR__ . '/auth.php';
